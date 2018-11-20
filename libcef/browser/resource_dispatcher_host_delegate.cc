@@ -27,8 +27,8 @@
 #include "content/public/browser/stream_info.h"
 #include "content/public/common/webplugininfo.h"
 #include "extensions/common/constants.h"
-#include "extensions/common/extension.h"
-#include "extensions/common/manifest_handlers/mime_types_handler.h"
+// #include "extensions/common/extension.h"
+// #include "extensions/common/manifest_handlers/mime_types_handler.h"
 #include "net/http/http_response_headers.h"
 #include "net/url_request/url_request.h"
 
@@ -43,7 +43,8 @@ bool CefResourceDispatcherHostDelegate::ShouldInterceptResourceAsStream(
     const std::string& mime_type,
     GURL* origin,
     std::string* payload) {
-  if (!extensions::ExtensionsEnabled())
+  return false;
+  /* if (!extensions::ExtensionsEnabled())
     return false;
 
   const content::ResourceRequestInfo* info =
@@ -82,7 +83,7 @@ bool CefResourceDispatcherHostDelegate::ShouldInterceptResourceAsStream(
     }
   }
 
-  return false;
+  return false; */
 }
 
 // Implementation based on

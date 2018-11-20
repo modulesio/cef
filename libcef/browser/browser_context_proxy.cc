@@ -114,11 +114,11 @@ base::FilePath CefBrowserContextProxy::GetPath() const {
   return parent_->GetPath();
 }
 
-std::unique_ptr<content::ZoomLevelDelegate>
+/* std::unique_ptr<content::ZoomLevelDelegate>
 CefBrowserContextProxy::CreateZoomLevelDelegate(
     const base::FilePath& partition_path) {
   return parent_->CreateZoomLevelDelegate(partition_path);
-}
+} */
 
 bool CefBrowserContextProxy::IsOffTheRecord() const {
   return parent_->IsOffTheRecord();

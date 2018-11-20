@@ -569,9 +569,9 @@ void CefMainDelegate::PreSandboxStartup() {
 }
 
 void CefMainDelegate::SandboxInitialized(const std::string& process_type) {
-  CefContentClient::SetPDFEntryFunctions(chrome_pdf::PPP_GetInterface,
+  /* CefContentClient::SetPDFEntryFunctions(chrome_pdf::PPP_GetInterface,
                                          chrome_pdf::PPP_InitializeModule,
-                                         chrome_pdf::PPP_ShutdownModule);
+                                         chrome_pdf::PPP_ShutdownModule); */
 }
 
 int CefMainDelegate::RunProcess(
@@ -615,11 +615,11 @@ void CefMainDelegate::ProcessExiting(const std::string& process_type) {
 
 #if defined(OS_LINUX)
 void CefMainDelegate::ZygoteForked() {
-  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  /* base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
   const std::string& process_type =
       command_line->GetSwitchValueASCII(switches::kProcessType);
   // Initialize crash reporting state for the newly forked process.
-  crash_reporting::ZygoteForked(command_line, process_type);
+  crash_reporting::ZygoteForked(command_line, process_type); */
 }
 #endif
 

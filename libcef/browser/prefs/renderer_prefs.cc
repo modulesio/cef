@@ -33,7 +33,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/web_preferences.h"
 #include "content/public/common/webrtc_ip_handling_policy.h"
-#include "extensions/browser/extension_registry.h"
+// #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/view_type_utils.h"
 #include "extensions/common/constants.h"
 #include "media/media_buildflags.h"
@@ -125,7 +125,7 @@ void SetChromePrefs(CefBrowserContext* profile, content::WebPreferences& web) {
   web.hyperlink_auditing_enabled =
       prefs->GetBoolean(prefs::kEnableHyperlinkAuditing);
 
-  if (extensions::ExtensionsEnabled()) {
+  /* if (extensions::ExtensionsEnabled()) {
     std::string image_animation_policy =
         prefs->GetString(prefs::kAnimationPolicy);
     if (image_animation_policy == kAnimationPolicyOnce)
@@ -134,7 +134,7 @@ void SetChromePrefs(CefBrowserContext* profile, content::WebPreferences& web) {
       web.animation_policy = content::IMAGE_ANIMATION_POLICY_NO_ANIMATION;
     else
       web.animation_policy = content::IMAGE_ANIMATION_POLICY_ALLOWED;
-  }
+  } */
 
   // Make sure we will set the default_encoding with canonical encoding name.
   web.default_encoding =
@@ -157,7 +157,7 @@ void SetChromePrefs(CefBrowserContext* profile, content::WebPreferences& web) {
 // Should match ChromeContentBrowserClientExtensionsPart::OverrideWebkitPrefs.
 void SetExtensionPrefs(content::RenderViewHost* rvh,
                        content::WebPreferences& web) {
-  if (!extensions::ExtensionsEnabled())
+  /* if (!extensions::ExtensionsEnabled())
     return;
 
   const extensions::ExtensionRegistry* registry =
@@ -182,7 +182,7 @@ void SetExtensionPrefs(content::RenderViewHost* rvh,
   extensions::ViewType view_type = extensions::GetViewType(web_contents);
   const extensions::Extension* extension =
       registry->enabled_extensions().GetByID(site_url.host());
-  extension_webkit_preferences::SetPreferences(extension, view_type, &web);
+  extension_webkit_preferences::SetPreferences(extension, view_type, &web); */
 }
 
 // Helper macro for setting a WebPreferences variable based on the value of a
@@ -318,9 +318,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(prefs::kDisable3DAPIs, false);
   registry->RegisterBooleanPref(prefs::kEnableHyperlinkAuditing, true);
 
-  // From Profile::RegisterProfilePrefs.
+  /* // From Profile::RegisterProfilePrefs.
   registry->RegisterDictionaryPref(prefs::kPartitionDefaultZoomLevel);
-  registry->RegisterDictionaryPref(prefs::kPartitionPerHostZoomLevels);
+  registry->RegisterDictionaryPref(prefs::kPartitionPerHostZoomLevels); */
 }
 
 void PopulateWebPreferences(content::RenderViewHost* rvh,

@@ -34,6 +34,7 @@
 #if defined(USING_CHROMIUM_INCLUDES)
 // When building CEF include the Chromium header directly.
 #include "base/compiler_specific.h"
+#define OS_LINUX 1
 #else  // !USING_CHROMIUM_INCLUDES
 // The following is substantially similar to the Chromium implementation.
 // If the Chromium implementation diverges the below implementation should be
@@ -47,7 +48,7 @@
 #ifndef OS_MACOSX
 #define OS_MACOSX 1
 #endif
-#elif defined(__linux__)
+#elif defined(__linux__) || defined(__ANDROID__)
 #ifndef OS_LINUX
 #define OS_LINUX 1
 #endif

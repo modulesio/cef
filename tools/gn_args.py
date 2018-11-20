@@ -70,15 +70,7 @@ cef_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 src_dir = os.path.abspath(os.path.join(cef_dir, os.pardir))
 
 # Determine the platform.
-if sys.platform == 'win32':
-  platform = 'windows'
-elif sys.platform == 'darwin':
-  platform = 'macosx'
-elif sys.platform.startswith('linux'):
-  platform = 'linux'
-else:
-  print 'Unknown operating system platform'
-  sys.exit()
+platform = 'android'
 
 
 def msg(msg):
@@ -165,7 +157,7 @@ def GetChromiumDefaultArgs():
       'target_cpu': 'x64',
   }
 
-  if platform == 'linux':
+  if platform == 'linux' or platform == 'android':
     defaults['use_sysroot'] = True
 
   if platform == 'windows':
@@ -204,7 +196,7 @@ def GetRecommendedDefaultArgs():
       'is_component_build': False,
   }
 
-  if platform == 'linux':
+  if platform == 'linux' or platform == 'android':
     # Use a sysroot environment. Default is true. False is recommended for local
     # builds.
     # Run the following commands to download the sysroot environment:
@@ -245,7 +237,7 @@ def GetRequiredArgs():
       'clang_use_chrome_plugins': False,
   }
 
-  if platform == 'linux':
+  if platform == 'linux' or platform == 'android':
     # Don't generate Chromium installer packages. This avoids GN dependency
     # errors with CEF (see issue #2301).
     # Due to the way this variable is declared in chrome/installer/BUILD.gn it
@@ -298,7 +290,7 @@ def ValidateArgs(args):
   is_official_build = GetArgValue(args, 'is_official_build')
   target_cpu = GetArgValue(args, 'target_cpu')
 
-  if platform == 'linux':
+  if platform == 'linux' or platform == 'android':
     use_sysroot = GetArgValue(args, 'use_sysroot')
 
   if platform == 'windows':
@@ -316,10 +308,10 @@ def ValidateArgs(args):
     assert target_cpu == 'x64', 'target_cpu must be "x64"'
   elif platform == 'windows':
     assert target_cpu in ('x86', 'x64'), 'target_cpu must be "x86" or "x64"'
-  elif platform == 'linux':
+  elif platform == 'linux' or platform == 'android':
     assert target_cpu in ('x86', 'x64', 'arm', 'arm64'), 'target_cpu must be "x86", "x64", "arm" or "arm64"'
 
-  if platform == 'linux':
+  if platform == 'linux' or platform == 'android':
     if target_cpu == 'x86':
       assert use_sysroot, 'target_cpu="x86" requires use_sysroot=true'
     elif target_cpu == 'arm':
@@ -402,7 +394,7 @@ def ValidateArgs(args):
         msg('INCLUDE/LIB/PATH values will be derived from %s' % vcvars_path)
 
 
-def GetConfigArgs(args, is_debug, cpu):
+def GetConfigArgs(args, is_debug, opsys, cpu):
   """
   Return merged GN args for the configuration and validate.
   """
@@ -419,6 +411,7 @@ def GetConfigArgs(args, is_debug, cpu):
 
   result = MergeDicts(args, add_args, {
       'is_debug': is_debug,
+      'target_os': opsys,
       'target_cpu': cpu,
   })
 
@@ -432,7 +425,7 @@ def GetConfigArgs(args, is_debug, cpu):
   return result
 
 
-def GetConfigArgsSandbox(platform, args, is_debug, cpu):
+def GetConfigArgsSandbox(platform, args, is_debug, opsys, cpu):
   """
   Return merged GN args for the cef_sandbox configuration and validate.
   """
@@ -446,6 +439,7 @@ def GetConfigArgsSandbox(platform, args, is_debug, cpu):
 
   result = MergeDicts(args, add_args, {
       'is_debug': is_debug,
+      'target_os': opsys,
       'target_cpu': cpu,
   })
 
@@ -505,6 +499,8 @@ def GetAllPlatformConfigs(build_args):
               % cpu)
     else:
       supported_cpus = ['x64']
+  elif platform == 'android':
+    supported_cpus = ['arm64']
   elif platform == 'windows':
     supported_cpus = ['x86', 'x64']
   elif platform == 'macosx':
@@ -514,17 +510,19 @@ def GetAllPlatformConfigs(build_args):
 
   for cpu in supported_cpus:
     if create_debug:
-      result['Debug_GN_' + cpu] = GetConfigArgs(args, True, cpu)
-    result['Release_GN_' + cpu] = GetConfigArgs(args, False, cpu)
+      result['Debug_GN_' + cpu] = GetConfigArgs(args, True, platform, cpu)
+    result['Release_GN_' + cpu] = GetConfigArgs(args, False, platform, cpu)
+
+    print "got aandroid: " + str(result['Release_GN_' + cpu])
 
     if platform in ('windows', 'macosx') and GetArgValue(
         args, 'is_official_build'):
       # Build cef_sandbox.lib with a different configuration.
       if create_debug:
         result['Debug_GN_' + cpu + '_sandbox'] = GetConfigArgsSandbox(
-            platform, args, True, cpu)
+            platform, args, True, platform, cpu)
       result['Release_GN_' + cpu + '_sandbox'] = GetConfigArgsSandbox(
-          platform, args, False, cpu)
+          platform, args, False, platform, cpu)
 
   return result
 
@@ -546,7 +544,7 @@ if __name__ == '__main__':
   # Allow override of the platform via the command-line for testing.
   if len(sys.argv) > 1:
     platform = sys.argv[1]
-    if not platform in ('linux', 'macosx', 'windows'):
+    if not platform in ('linux', 'android', 'macosx', 'windows'):
       sys.stderr.write('Usage: %s <platform>' % sys.argv[0])
       sys.exit()
 

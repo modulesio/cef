@@ -10,7 +10,7 @@
 #include "chrome/browser/spellchecker/spellcheck_factory.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/prefs/prefs_tab_helper.h"
-#include "extensions/browser/api/alarms/alarm_manager.h"
+// #include "extensions/browser/api/alarms/alarm_manager.h"
 #include "extensions/browser/api/storage/storage_frontend.h"
 #include "extensions/browser/renderer_startup_helper.h"
 
@@ -23,11 +23,11 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   SpellcheckServiceFactory::GetInstance();
   ThemeServiceFactory::GetInstance();
 
-  if (extensions::ExtensionsEnabled()) {
+  /* if (extensions::ExtensionsEnabled()) {
     extensions::AlarmManager::GetFactoryInstance();
     extensions::RendererStartupHelperFactory::GetInstance();
     extensions::StorageFrontend::GetFactoryInstance();
-  }
+  } */
 }
 
 }  // namespace cef

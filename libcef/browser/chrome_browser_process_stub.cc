@@ -296,7 +296,7 @@ ChromeBrowserProcessStub::optimization_guide_service() {
 }
 
 #if (defined(OS_WIN) || defined(OS_LINUX)) && !defined(OS_CHROMEOS)
-void ChromeBrowserProcessStub::StartAutoupdateTimer() {}
+// void ChromeBrowserProcessStub::StartAutoupdateTimer() {}
 #endif
 
 net_log::ChromeNetLog* ChromeBrowserProcessStub::net_log() {

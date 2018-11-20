@@ -21,7 +21,9 @@ class CefBrowserPlatformDelegateNativeLinux
   bool CreateHostWindow() override;
   void CloseHostWindow() override;
   CefWindowHandle GetHostWindowHandle() const override;
+#if defined(USE_AURA)
   views::Widget* GetWindowWidget() const override;
+#endif
   void SendFocusEvent(bool setFocus) override;
   void NotifyMoveOrResizeStarted() override;
   void SizeTo(int width, int height) override;
@@ -55,9 +57,11 @@ class CefBrowserPlatformDelegateNativeLinux
   // True if the host window has been created.
   bool host_window_created_;
 
+#if defined(USE_AURA)
   // Widget hosting the web contents. It will be deleted automatically when the
   // associated root window is destroyed.
   views::Widget* window_widget_;
+#endif
 
   CefWindowX11* window_x11_;
 };

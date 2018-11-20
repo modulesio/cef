@@ -95,7 +95,7 @@ std::unique_ptr<CefBrowserPlatformDelegate> CefBrowserPlatformDelegate::Create(
     if (is_windowless)
       return CreateOSRDelegate(std::move(native_delegate));
     return std::move(native_delegate);
-  } else if (create_params.extension_host_type ==
+  } /* else if (create_params.extension_host_type ==
              extensions::VIEW_TYPE_EXTENSION_BACKGROUND_PAGE) {
     // Creating a background extension host without a window.
     std::unique_ptr<CefBrowserPlatformDelegateNative> native_delegate =
@@ -103,7 +103,7 @@ std::unique_ptr<CefBrowserPlatformDelegate> CefBrowserPlatformDelegate::Create(
                              use_shared_texture, use_external_begin_frame);
     return std::make_unique<CefBrowserPlatformDelegateBackground>(
         std::move(native_delegate));
-  }
+  } */
 #if defined(USE_AURA)
   else {
     // CefWindowInfo is not used in this case.

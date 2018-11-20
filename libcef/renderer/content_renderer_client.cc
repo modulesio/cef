@@ -78,7 +78,7 @@
 #include "content/public/renderer/render_view_visitor.h"
 #include "content/renderer/render_widget.h"
 #include "extensions/common/switches.h"
-#include "extensions/renderer/renderer_extension_registry.h"
+// #include "extensions/renderer/renderer_extension_registry.h"
 #include "ipc/ipc_sync_channel.h"
 #include "media/base/media.h"
 #include "printing/print_settings.h"
@@ -478,7 +478,8 @@ bool CefContentRendererClient::OverrideCreatePlugin(
     content::RenderFrame* render_frame,
     const blink::WebPluginParams& params,
     blink::WebPlugin** plugin) {
-  std::string orig_mime_type = params.mime_type.Utf8();
+  return false;
+  /* std::string orig_mime_type = params.mime_type.Utf8();
   if (extensions::ExtensionsEnabled() &&
       !extensions_renderer_client_->OverrideCreatePlugin(render_frame,
                                                          params)) {
@@ -493,7 +494,7 @@ bool CefContentRendererClient::OverrideCreatePlugin(
       &plugin_info);
   *plugin = ChromeContentRendererClient::CreatePlugin(render_frame, params,
                                                       *plugin_info);
-  return true;
+  return true; */
 }
 
 bool CefContentRendererClient::ShouldFork(blink::WebLocalFrame* frame,

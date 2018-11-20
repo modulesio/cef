@@ -4,9 +4,9 @@
 
 #include "libcef/browser/browser_context.h"
 #include "libcef/browser/content_browser_client.h"
-#include "libcef/browser/extensions/extension_system.h"
+// #include "libcef/browser/extensions/extension_system.h"
 #include "libcef/browser/thread_util.h"
-#include "libcef/common/extensions/extensions_util.h"
+// #include "libcef/common/extensions/extensions_util.h"
 
 #include "base/logging.h"
 #include "chrome/browser/plugins/chrome_plugin_service_filter.h"
@@ -15,7 +15,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/storage_partition.h"
-#include "extensions/browser/process_manager.h"
+// #include "extensions/browser/process_manager.h"
 
 CefBrowserContext::CefBrowserContext(bool is_proxy)
     : is_proxy_(is_proxy), extension_system_(NULL) {}
@@ -37,7 +37,7 @@ void CefBrowserContext::Initialize() {
   BrowserContextDependencyManager::GetInstance()->CreateBrowserContextServices(
       this);
 
-  const bool extensions_enabled = extensions::ExtensionsEnabled();
+  /* const bool extensions_enabled = extensions::ExtensionsEnabled();
   if (extensions_enabled) {
     // Create the custom ExtensionSystem first because other KeyedServices
     // depend on it.
@@ -56,7 +56,7 @@ void CefBrowserContext::Initialize() {
     // load notifications. This is necessary for the proper initialization of
     // background/event pages.
     extensions::ProcessManager::Get(this);
-  }
+  } */
 }
 
 void CefBrowserContext::PostInitialize() {
@@ -66,9 +66,9 @@ void CefBrowserContext::PostInitialize() {
   DCHECK(pref_service);
   user_prefs::UserPrefs::Set(this, pref_service);
 
-  const bool extensions_enabled = extensions::ExtensionsEnabled();
+  /* const bool extensions_enabled = extensions::ExtensionsEnabled();
   if (extensions_enabled && !is_proxy_)
-    extension_system_->Init();
+    extension_system_->Init(); */
 
   ChromePluginServiceFilter::GetInstance()->RegisterResourceContext(
       this, resource_context_.get());
@@ -129,10 +129,10 @@ CefBrowserContext::CreateMediaRequestContextForStoragePartition(
   return nullptr;
 }
 
-ChromeZoomLevelPrefs* CefBrowserContext::GetZoomLevelPrefs() {
+/* ChromeZoomLevelPrefs* CefBrowserContext::GetZoomLevelPrefs() {
   return static_cast<ChromeZoomLevelPrefs*>(
       GetStoragePartition(this, NULL)->GetZoomLevelDelegate());
-}
+} */
 
 scoped_refptr<network::SharedURLLoaderFactory>
 CefBrowserContext::GetURLLoaderFactory() {
